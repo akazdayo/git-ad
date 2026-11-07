@@ -1,0 +1,54 @@
+#!/bin/sh
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+case "${1-}" in
+  --help|-h)
+    printf '%s\n' 'git-ad: Ads for your typos.' '' 'Usage: git ad [anything]' 'Displays a fictional advertisement. Does not stage files.'
+    exit 0
+    ;;
+  --version)
+    printf '%s\n' 'git-ad 0.1.0'
+    exit 0
+    ;;
+esac
+
+printf '%s\n' "git: 'ad' is not a git command. But it is an opportunity." ''
+
+# POSIX awk supplies a different selection over time without extra dependencies.
+ad=$(awk 'BEGIN { srand(); print int(rand() * 3) }')
+case "$ad" in
+  0)
+    printf '%s\n' \
+      '  +--------------------------------------------------+' \
+      '  | Sponsored                                        |' \
+      '  |                                                  |' \
+      '  |              git add Premium                     |' \
+      '  |       Your changes. On the stage they deserve.    |' \
+      '  |                                                  |' \
+      '  |       Starting at $0/month.       [ Add now ]     |' \
+      '  +--------------------------------------------------+'
+    ;;
+  1)
+    printf '%s\n' \
+      '  +--------------------------------------------------+' \
+      '  | Sponsored                                        |' \
+      '  |                                                  |' \
+      '  |          Conflicts in your area!                 |' \
+      '  |       Meet local branches ready to merge.        |' \
+      '  |                                                  |' \
+      '  |       No commitment required.    [ Resolve now ] |' \
+      '  +--------------------------------------------------+'
+    ;;
+  *)
+    printf '%s\n' \
+      '  +--------------------------------------------------+' \
+      '  | Sponsored                                        |' \
+      '  |                                                  |' \
+      '  |          Have you tried git push?                |' \
+      '  |       Take your commits to the cloud.            |' \
+      '  |                                                  |' \
+      '  |       Terms and remotes apply.    [ Learn more ]  |' \
+      '  +--------------------------------------------------+'
+    ;;
+esac
+printf '\n%s\n' 'Nothing staged. Everything advertised.'
