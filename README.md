@@ -26,7 +26,7 @@ invocations in the same second can show the same ad.
 ## Install
 
 Requires Git and a POSIX shell environment with standard utilities, including
-`awk`. Intended for macOS, Linux, and WSL.
+`awk`. Intended for macOS, Linux, WSL, and Windows with Git for Windows.
 
 Download or clone this repository, then run from its root:
 
@@ -59,6 +59,22 @@ INSTALL_DIR="$HOME/bin" sh install.sh
 
 The installer refuses to overwrite an existing file. To update, uninstall using
 your old checkout before installing the new version.
+
+### Windows
+
+Git for Windows includes the shell and utilities that git-ad needs. Run the installer from Git Bash:
+
+```sh
+sh install.sh
+```
+
+Then add `%USERPROFILE%\.local\bin` to your user `Path` environment variable, for example from PowerShell:
+
+```powershell
+[Environment]::SetEnvironmentVariable('Path', "$env:USERPROFILE\.local\bin;" + [Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
+```
+
+Open a new terminal, and `git ad .` works from Git Bash, Command Prompt, and PowerShell. Git for Windows runs `git-<command>` scripts that start with `#!` through its bundled shell, so no `.cmd` wrapper is needed. Run `sh uninstall.sh` from Git Bash to uninstall.
 
 ## Uninstall
 
