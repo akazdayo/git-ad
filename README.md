@@ -16,6 +16,8 @@ git: 'ad' is not a git command. But it is an opportunity.
   +--------------------------------------------------+
 
 Nothing staged. Everything advertised.
+Your close button will be available in 10 seconds.
+[x] Close ad (type x and press Enter)
 ```
 
 Displays one of three fictional advertisements. No network requests, tracking,

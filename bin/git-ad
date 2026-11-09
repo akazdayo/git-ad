@@ -52,3 +52,28 @@ case "$ad" in
     ;;
 esac
 printf '\n%s\n' 'Nothing staged. Everything advertised.'
+
+# Keep pipelines and redirected output usable without an interactive terminal.
+if [ -t 0 ] && [ -t 1 ]; then
+  tty_settings=$(stty -g < /dev/tty) || exit 1
+  trap 'stty "$tty_settings" < /dev/tty' EXIT
+  # Ignore terminal interrupt, quit, and suspend keys until the ad is closed.
+  trap '' INT QUIT TSTP
+  trap 'exit 143' TERM
+  trap 'exit 129' HUP
+
+  printf '%s\n' 'Your close button will be available in 10 seconds.'
+  # Disable echo and discard anything typed while the ad is unskippable.
+  stty -echo -icanon min 0 time 0 < /dev/tty || exit 1
+  sleep 10
+  dd bs=4096 count=1 < /dev/tty > /dev/null 2>&1
+  stty "$tty_settings" < /dev/tty || exit 1
+
+  printf '%s\n' '[x] Close ad (type x and press Enter)'
+  while IFS= read -r answer < /dev/tty; do
+    case "$answer" in
+      x|X) break ;;
+      *) printf '%s\n' 'Please close the ad with x.' ;;
+    esac
+  done
+fi
